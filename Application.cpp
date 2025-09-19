@@ -37,6 +37,23 @@ namespace ClassGame {
                 ImGui::Text("Current Player Number: %d", game->getCurrentPlayer()->playerNumber());
                 ImGui::Text("Current Board State: %s", game->stateString().c_str());
 
+                if (!gameOver)
+                {
+                    if (ImGui::Button("Play VS Human"))
+                    {
+                        game->stopGame();
+                        game->_useAI = false;
+                        game->setUpBoard();
+                    }
+
+                    if (ImGui::Button("Play VS AI"))
+                    {
+                        game->stopGame();
+                        game->_useAI = true;
+                        game->setUpBoard();
+                    }
+                }
+
                 if (gameOver) {
                     ImGui::Text("Game Over!");
                     ImGui::Text("Winner: %d", gameWinner);
