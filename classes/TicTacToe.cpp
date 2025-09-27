@@ -25,7 +25,7 @@
 // -----------------------------------------------------------------------------
 
 const int AI_PLAYER   = 1;      // index of the AI player (O)
-const int HUMAN_PLAYER= 0;      // index of the human player (X)
+const int HUMAN_PLAYER= -1;      // index of the human player (X)
 
 TicTacToe::TicTacToe()
 {
@@ -257,9 +257,6 @@ std::string TicTacToe::stateString() const
         }
     }
 
-    //string state = "000000000"
-    //s[y*3+x] = bit->getOwner()->playerNumber() == 0 ? '1' : '2';
-
     return state;
 
 
@@ -378,14 +375,17 @@ int TicTacToe::negamax(std::string &state, int depth, int playerColor)
     }
 
     int bestVal = -10000;
-    for (int i = 0; i < 9; i++)
+    for (int y = 0; y < 3; y++)
     {
-        if (state[i] == '0')
+        for (int x = 0; x < 3; x++)
         {
-            state[i] = (playerColor == HUMAN_PLAYER) ? '1' : '2';
-            int val = -negamax(state, depth + 1, 1 - playerColor);
-            state[i] = '0';
-            bestVal = std::max(bestVal, val);
+            if (state[y * 3 + x] == '0')
+            {
+                state[y * 3 + x] = (playerColor == HUMAN_PLAYER) ? '1' : '2';
+                int val = -negamax(state, depth + 1, -playerColor);
+                state[y * 3 + x] = '0';
+                bestVal = std::max(bestVal, val);
+            }
         }
     }
 
